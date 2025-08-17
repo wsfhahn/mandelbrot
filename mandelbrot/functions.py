@@ -1,6 +1,7 @@
 from mandelbrot.types import Z
 from math import sqrt
 from numpy import arange
+from PIL import Image
 
 def step(z: Z, c: Z) -> Z:
     # We'll treat the real part of the constant as x and the imaginary part as y
@@ -72,10 +73,10 @@ def make_plot(precision: int,
     # Set x to min to begin with, because we're counting up
     # Set y to max to begin, because in this case we're counting down (otherwise plot would be upside down)
     x = x_min
-    y = y_min
+    y = y_max
 
     # Loop over X and Y, computing if mandelbrot with each step
-    while y <= y_max:
+    while y >= y_min:
         print("Y:", y)
         while x <= x_max:
             print("X:", x)
@@ -89,18 +90,41 @@ def make_plot(precision: int,
         plot.append(buffer)
         buffer = []
         x = x_min
-        y += step_size
+        y -= step_size
 
     # Return the plot
     return plot
 
+def plot_to_image(plt: list[list[bool]]) -> Image:
+    x_dim = len(plt[0])
+    image = Image.new("RGB", (x_dim, len(plt)))
+
+    x = 0
+    y = 0
+
+    for row in plt:
+        if len(row) != x_dim:
+            raise ValueError("Found row of different size than x_dim")
+        
+        for val in row:
+            if val == True:
+                image.putpixel((x, y), (0, 255, 0))
+            else:
+                image.putpixel((x, y), (0, 0, 255))
+            x += 1
+        y += 1
+        x = 0
+    
+    return image
+            
+
 if __name__ == "__main__":
     prec = 50
-    x_min = -5.0
-    x_max = 5.0
-    y_min = -5.0
-    y_max = 5.0
-    step_size = 0.5
+    x_min = -2.0
+    x_max = 1.5
+    y_min = -2.0
+    y_max = 2.0
+    step_size = 0.0025
 
     plt = make_plot(prec,
                     x_min,
@@ -108,6 +132,6 @@ if __name__ == "__main__":
                     y_min,
                     y_max,
                     step_size)
-    
-    for row in plt:
-        print(row)
+
+    img = plot_to_image(plt)
+    img.show()
