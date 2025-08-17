@@ -1,0 +1,13 @@
+[project]
+name = "mandelbrot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mypy>=1.17.1",
+]
+
+[tool.mypy]
+strict=true
+ignore_missing_imports=true
