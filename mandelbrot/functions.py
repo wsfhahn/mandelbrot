@@ -54,11 +54,9 @@ def in_mandelbrot_set(n: int, c: Z) -> tuple[list[Z], bool]:
 
         # If the magnitude is greater than 2, we know we've diverged
         if abs(get_magnitude(z)) >= 2:
-            print("Diverging, not in set!")
             return (z_set, False)
     
     # If we get here, it didn't diverge with n iterations
-    print("Did not diverge, in set!")
     return (z_set, True)
 
 def make_plot(precision: int,
@@ -77,9 +75,7 @@ def make_plot(precision: int,
 
     # Loop over X and Y, computing if mandelbrot with each step
     while y >= y_min:
-        print("Y:", y)
         while x <= x_max:
-            print("X:", x)
             c = Z(
                 real=x,
                 imag=y
@@ -95,7 +91,7 @@ def make_plot(precision: int,
     # Return the plot
     return plot
 
-def plot_to_image(plt: list[list[bool]]) -> Image:
+def plot_to_image(plt: list[list[bool]]) -> Image.Image:
     x_dim = len(plt[0])
     image = Image.new("RGB", (x_dim, len(plt)))
 
@@ -116,22 +112,45 @@ def plot_to_image(plt: list[list[bool]]) -> Image:
         x = 0
     
     return image
+
+def animation_prec(max_precision: int,
+                   x_min: float,
+                   x_max: float,
+                   y_min: float,
+                   y_max: float,
+                   step_size: float) -> None:
+    frames: list[Image.Image] = []
+    
+    for p in range(max_precision):
+        plot = make_plot(
+            p,
+            x_min,
+            x_max,
+            y_min,
+            y_max,
+            step_size
+        )
+        frame = plot_to_image(plot)
+        frames.append(frame)
+    
+    first_frame = frames[0]
+    first_frame.save("plot.gif", format="GIF", append_images=frames[1:], duration=100, loop=0)
+
             
 
 if __name__ == "__main__":
-    prec = 50
-    x_min = -2.0
-    x_max = 1.5
-    y_min = -2.0
-    y_max = 2.0
+    prec = 45
+    x_min = -1.25
+    x_max = -0.25
+    y_min = -0.5
+    y_max = 0.5
     step_size = 0.0025
 
-    plt = make_plot(prec,
-                    x_min,
-                    x_max,
-                    y_min,
-                    y_max,
-                    step_size)
-
-    img = plot_to_image(plt)
-    img.show()
+    animation_prec(
+        prec,
+        x_min,
+        x_max,
+        y_min,
+        y_max,
+        step_size
+    )
