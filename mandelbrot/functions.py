@@ -65,6 +65,7 @@ def make_plot(precision: int,
               y_min: float,
               y_max: float,
               step_size: float) -> list[list[bool]]:
+
     buffer: list[bool] = []
     plot: list[list[bool]] = []
 
@@ -104,21 +105,22 @@ def plot_to_image(plt: list[list[bool]]) -> Image.Image:
         
         for val in row:
             if val == True:
-                image.putpixel((x, y), (0, 255, 0))
+                image.putpixel((x, y), (255, 255, 255))
             else:
-                image.putpixel((x, y), (0, 0, 255))
+                image.putpixel((x, y), (0, 0, 0))
             x += 1
         y += 1
         x = 0
     
     return image
 
-def animation_prec(max_precision: int,
+def animate_prec(max_precision: int,
                    x_min: float,
                    x_max: float,
                    y_min: float,
                    y_max: float,
-                   step_size: float) -> None:
+                   step_size: float,
+                   save_path: str) -> None:
     frames: list[Image.Image] = []
     
     for p in range(max_precision):
@@ -134,23 +136,4 @@ def animation_prec(max_precision: int,
         frames.append(frame)
     
     first_frame = frames[0]
-    first_frame.save("plot.gif", format="GIF", append_images=frames[1:], duration=100, loop=0)
-
-            
-
-if __name__ == "__main__":
-    prec = 45
-    x_min = -1.25
-    x_max = -0.25
-    y_min = -0.5
-    y_max = 0.5
-    step_size = 0.0025
-
-    animation_prec(
-        prec,
-        x_min,
-        x_max,
-        y_min,
-        y_max,
-        step_size
-    )
+    first_frame.save(save_path, format="GIF", append_images=frames[1:], duration=100, loop=0)
