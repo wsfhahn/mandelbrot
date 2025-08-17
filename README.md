@@ -8,7 +8,13 @@ This project creates an animated GIF of the Mandelbrot plot with increasing prec
 
 ## How do I use it?
 
-This project is built with `uv`. To create a virtual environment and install the necessary packages, run:
+This project is built with `uv`. If you don't have UV, install it using the following command:
+
+```zsh
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+To create a virtual environment and install the necessary packages, run:
 
 ```zsh
 uv sync
