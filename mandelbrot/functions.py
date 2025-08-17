@@ -1,5 +1,6 @@
 from mandelbrot.types import Z
 from math import sqrt
+from numpy import arange
 
 def step(z: Z, c: Z) -> Z:
     # We'll treat the real part of the constant as x and the imaginary part as y
@@ -59,13 +60,54 @@ def in_mandelbrot_set(n: int, c: Z) -> tuple[list[Z], bool]:
     print("Did not diverge, in set!")
     return (z_set, True)
 
+def make_plot(precision: int,
+              x_min: float,
+              x_max: float,
+              y_min: float,
+              y_max: float,
+              step_size: float) -> list[list[bool]]:
+    buffer: list[bool] = []
+    plot: list[list[bool]] = []
+
+    # Set x to min to begin with, because we're counting up
+    # Set y to max to begin, because in this case we're counting down (otherwise plot would be upside down)
+    x = x_min
+    y = y_min
+
+    # Loop over X and Y, computing if mandelbrot with each step
+    while y <= y_max:
+        print("Y:", y)
+        while x <= x_max:
+            print("X:", x)
+            c = Z(
+                real=x,
+                imag=y
+            )
+            _, is_mandelbrot = in_mandelbrot_set(precision, c)
+            buffer.append(is_mandelbrot)
+            x += step_size
+        plot.append(buffer)
+        buffer = []
+        x = x_min
+        y += step_size
+
+    # Return the plot
+    return plot
+
 if __name__ == "__main__":
-    n = 50
-    c = Z(
-        real=-1,
-        imag=0
-    )
+    prec = 50
+    x_min = -5.0
+    x_max = 5.0
+    y_min = -5.0
+    y_max = 5.0
+    step_size = 0.5
 
-    z_set, is_mandelbrot = in_mandelbrot_set(n, c)
-
-    print(is_mandelbrot)
+    plt = make_plot(prec,
+                    x_min,
+                    x_max,
+                    y_min,
+                    y_max,
+                    step_size)
+    
+    for row in plt:
+        print(row)
