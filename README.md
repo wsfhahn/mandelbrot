@@ -8,9 +8,9 @@ This project creates an animated GIF of the Mandelbrot set with increasing preci
 
 ## What is the Mandelbrot set?
 
-For the quadratic map $z_{n+1} = z_n^2 + c$, where $z$ is a complex number and $c$ is a complex number as a constant, there exists a set of values $c$ such that the value of $z$ remains bounded as the map is applied.
+For the quadratic map zₙ₊₁ = zₙ² + c, where z is a complex number and c is a complex number as a constant, there exists a set of values of c such that the value of z remains bounded as the map is applied.
 
-The set of values $c$ that keep $z$ bounded is known as the Mandelbrot set. When the Mandelbrot set is plotted on the complex plane (real component of $c$ on the X axis and imaginary on the Y axis), a beautiful fractal pattern appears.
+The set of values c that keep z bounded is known as the Mandelbrot set. When the Mandelbrot set is plotted on the complex plane (real component of c on the X axis and imaginary on the Y axis), a beautiful fractal pattern appears.
 
 ## How do I use it?
 
